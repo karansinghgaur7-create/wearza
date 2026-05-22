@@ -1,0 +1,265 @@
+/* PlaceOrder.css */
+
+/* =========================
+   PLACE ORDER PAGE
+========================= */
+
+.checkout {
+  width: 100%;
+  display: grid;
+  grid-template-columns: 1.4fr 0.8fr;
+  gap: 30px;
+  padding: 40px 7%;
+  background: #f6f7fb;
+  align-items: start;
+  box-sizing: border-box;
+}
+
+/* =========================
+   LEFT & RIGHT CONTAINERS
+========================= */
+
+.checkout-left,
+.checkout-right {
+  background: #ffffff;
+  padding: 28px;
+  border-radius: 18px;
+  box-shadow: 0 3px 14px rgba(0, 0, 0, 0.05);
+}
+
+/* =========================
+   TITLES
+========================= */
+
+.title,
+.cart-box h3,
+.payment-box h3 {
+  font-size: 28px;
+  font-weight: 700;
+  color: #222;
+  margin-bottom: 22px;
+}
+
+.title span,
+.cart-box span,
+.payment-box span {
+  color: tomato;
+}
+
+/* =========================
+   FORM
+========================= */
+
+.checkout-form {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.row {
+  display: flex;
+  gap: 16px;
+}
+
+/* =========================
+   INPUT FIELDS
+========================= */
+
+.checkout-form input {
+  width: 100%;
+  padding: 14px 16px;
+  border: 1px solid #dcdcdc;
+  border-radius: 10px;
+  background: #fafafa;
+  font-size: 14px;
+  transition: all 0.3s ease;
+}
+
+.checkout-form input::placeholder {
+  color: #888;
+}
+
+.checkout-form input:focus {
+  border-color: tomato;
+  background: #fff;
+  box-shadow: 0 0 0 3px rgba(255, 99, 71, 0.12);
+  outline: none;
+}
+
+/* =========================
+   CART SUMMARY
+========================= */
+
+.cart-box {
+  background: #fafafa;
+  border: 1px solid #ececec;
+  border-radius: 16px;
+  padding: 22px;
+  margin-bottom: 24px;
+}
+
+.cart-box h3 {
+  margin-bottom: 20px;
+}
+
+.cart-info-total,
+.cart-total-count {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.cart-info-total {
+  padding: 14px 0;
+  border-bottom: 1px solid #ededed;
+}
+
+.cart-info-total p {
+  margin: 0;
+  color: #555;
+  font-size: 15px;
+}
+
+.cart-total-count {
+  margin-top: 14px;
+  padding-top: 16px;
+  border-top: 2px solid #e4e4e4;
+}
+
+.cart-total-count p {
+  margin: 0;
+  font-size: 19px;
+  font-weight: 700;
+  color: #111;
+}
+
+/* =========================
+   PAYMENT SECTION
+========================= */
+
+.payment-box {
+  margin-top: 10px;
+}
+
+.payment-options {
+  display: flex;
+  gap: 14px;
+  flex-wrap: wrap;
+}
+
+.payment-option {
+  flex: 1;
+  min-width: 170px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+
+  padding: 14px;
+  border: 1px solid #ddd;
+  border-radius: 12px;
+  background: #fff;
+
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.payment-option:hover {
+  border-color: tomato;
+  background: #fff5f2;
+  transform: translateY(-2px);
+}
+
+.payment-option.active {
+  border-color: tomato;
+  background: #fff5f2;
+}
+
+.payment-option input {
+  width: 17px;
+  height: 17px;
+  accent-color: tomato;
+  cursor: pointer;
+}
+
+.payment-option img {
+  height: 22px;
+  object-fit: contain;
+}
+
+.payment-option p {
+  margin: 0;
+  font-size: 14px;
+  font-weight: 500;
+  color: #444;
+  white-space: nowrap;
+}
+
+/* =========================
+   BUTTON
+========================= */
+
+.place-btn {
+  width: 100%;
+  display: block;
+  margin-top: 20px;
+  padding: 14px;
+  border: none;
+  border-radius: 12px;
+
+  background: tomato;
+  color: white;
+
+  font-size: 15px;
+  font-weight: 600;
+
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.place-btn:hover {
+  background: #e5533d;
+  transform: translateY(-2px);
+}
+
+.place-btn:active {
+  transform: scale(0.98);
+}
+
+/* =========================
+   RESPONSIVE DESIGN
+========================= */
+
+@media (max-width: 992px) {
+  .checkout {
+    grid-template-columns: 1fr;
+    padding: 35px 5%;
+  }
+
+  .payment-options {
+    flex-direction: column;
+  }
+}
+
+@media (max-width: 600px) {
+  .checkout-left,
+  .checkout-right {
+    padding: 22px;
+  }
+
+  .row {
+    flex-direction: column;
+    gap: 18px;
+  }
+
+  .title,
+  .cart-box h3,
+  .payment-box h3 {
+    font-size: 24px;
+  }
+
+  .place-btn {
+    font-size: 14px;
+  }
+}

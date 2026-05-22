@@ -1,0 +1,85 @@
+/* Container */
+.policy-list {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 30px;
+  margin: 60px auto;
+  flex-wrap: wrap;
+  max-width: 1100px;
+}
+
+/* Card */
+.policy-item {
+  flex: 1 1 300px;
+  max-width: 320px;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  padding: 30px 20px;
+  border-radius: 16px;
+  background-color: #f5f5f5;
+  text-align: center;
+
+  transition: all 0.3s ease;
+}
+
+/* Hover */
+.policy-item:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+}
+
+/* Image */
+.policy-item img {
+  width: 55px;
+  height: 55px;
+  margin-bottom: 15px;
+  display: block;
+}
+
+/* Title */
+.policy-title {
+  font-size: 20px;
+  font-weight: 600;
+  margin: 10px 0 8px 0;
+  color: #222;
+}
+
+/* Description */
+.policy-description {
+  font-size: 14px;
+  color: #666;
+  margin: 0;
+  line-height: 1.5;
+}
+
+/* Tablet */
+@media (max-width: 768px) {
+  .policy-item {
+    flex: 1 1 45%;
+  }
+}
+
+/* Mobile */
+@media (max-width: 480px) {
+  .policy-item {
+    flex: 1 1 100%;
+  }
+
+  .policy-title {
+    font-size: 18px;
+  }
+
+  .policy-description {
+    font-size: 13px;
+  }
+
+  .policy-item img {
+    width: 45px;
+    height: 45px;
+  }
+}

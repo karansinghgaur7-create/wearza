@@ -1,0 +1,134 @@
+/* About.css */
+
+.about {
+  padding: 60px 20px;
+}
+
+/* Title */
+
+.about-title {
+  text-align: center;
+  margin-bottom: 50px;
+}
+
+.about-title h2 {
+  font-size: 40px;
+  color: #222;
+  font-weight: 700;
+}
+
+.about-title span {
+  color: #e87403;
+}
+
+/* About Content */
+
+.about-content {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 50px;
+  margin-bottom: 70px;
+  flex-wrap: wrap;
+}
+
+.about-image-wrapper {
+  flex: 1;
+  min-width: 300px;
+}
+
+.about-image {
+  width: 100%;
+  max-width: 500px;
+  border-radius: 12px;
+  object-fit: cover;
+}
+
+.about-text {
+  flex: 1;
+  min-width: 300px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  color: #555;
+  line-height: 1.8;
+}
+
+.about-text h3 {
+  font-size: 24px;
+  color: #222;
+  margin-top: 10px;
+}
+
+/* Why Choose Us */
+
+.choose-title {
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+.choose-title h2 {
+  font-size: 32px;
+  color: #222;
+}
+
+.choose-container {
+  display: flex;
+  gap: 25px;
+  flex-wrap: wrap;
+}
+
+.choose-box {
+  flex: 1;
+  min-width: 250px;
+  padding: 35px 25px;
+  border: 1px solid #ddd;
+  border-radius: 12px;
+  background: #fff;
+  transition: 0.3s ease;
+}
+
+.choose-box:hover {
+  transform: translateY(-5px);
+}
+
+.choose-box h3 {
+  font-size: 22px;
+  margin-bottom: 15px;
+  color: #222;
+}
+
+.choose-box p {
+  color: #666;
+  line-height: 1.7;
+}
+
+/* Responsive */
+
+@media (max-width: 768px) {
+
+  .about {
+    padding: 40px 15px;
+  }
+
+  .about-title h2 {
+    font-size: 32px;
+  }
+
+  .about-content {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .about-image {
+    max-width: 100%;
+  }
+
+  .choose-title h2 {
+    font-size: 28px;
+  }
+
+  .choose-container {
+    flex-direction: column;
+  }
+}
