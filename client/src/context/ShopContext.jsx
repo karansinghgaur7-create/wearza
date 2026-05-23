@@ -22,12 +22,13 @@ const ShopContextProvider = (props) => {
   const backendUrl =
     import.meta.env.VITE_BACKEND_URL;
 
-  const token =
-    localStorage.getItem("token");
-
   // ==========================================
   // STATES
   // ==========================================
+
+  const [token, setToken] = useState(
+    localStorage.getItem("token") || ""
+  );
 
   const [cartItems, setCartItems] =
     useState([]);
@@ -40,7 +41,6 @@ const ShopContextProvider = (props) => {
   // ==========================================
 
   const getCartCount = () => {
-
     return cartItems.reduce(
       (total, item) =>
         total + item.quantity,
@@ -58,11 +58,9 @@ const ShopContextProvider = (props) => {
   ) => {
 
     if (!size) {
-
       toast.error(
         "Select Product Size"
       );
-
       return;
     }
 
@@ -81,17 +79,14 @@ const ShopContextProvider = (props) => {
       );
 
     if (existingIndex !== -1) {
-
       cartData[
         existingIndex
       ].quantity += 1;
-
     } else {
-
       cartData.push({
         _id: product._id,
         name: product.name,
-        image: product.image[0],
+        image: product.image[0] || product.image,
         price: product.price,
         quantity: 1,
         size,
@@ -105,11 +100,17 @@ const ShopContextProvider = (props) => {
       JSON.stringify(cartData)
     );
 
+    // Update count for navbar compatibility
+    const totalCount = cartData.reduce(
+      (total, item) => total + item.quantity,
+      0
+    );
+    localStorage.setItem("cartCount", totalCount);
+    window.dispatchEvent(new Event("cartUpdated"));
+
     // OPTIONAL BACKEND SAVE
     if (token) {
-
       try {
-
         await axios.post(
           `${backendUrl}/api/cart/update`,
           {
@@ -121,11 +122,8 @@ const ShopContextProvider = (props) => {
             },
           }
         );
-
       } catch (error) {
-
         console.log(error);
-
         toast.error(error.message);
       }
     }
@@ -136,13 +134,102 @@ const ShopContextProvider = (props) => {
   };
 
   // ==========================================
+  // UPDATE CART
+  // ==========================================
+
+  const updateCart = async (updatedCart) => {
+    setCartItems(updatedCart);
+    localStorage.setItem(
+      "cartItems",
+      JSON.stringify(updatedCart)
+    );
+
+    // Update count for navbar compatibility
+    const totalCount = updatedCart.reduce(
+      (total, item) => total + item.quantity,
+      0
+    );
+    localStorage.setItem("cartCount", totalCount);
+    window.dispatchEvent(new Event("cartUpdated"));
+
+    if (token) {
+      try {
+        await axios.post(
+          `${backendUrl}/api/cart/update`,
+          {
+            cartData: updatedCart,
+          },
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+      } catch (error) {
+        console.log(error);
+        toast.error(error.message);
+      }
+    }
+  };
+
+  // ==========================================
+  // GET USER CART
+  // ==========================================
+
+  const getUserCart = async (activeToken) => {
+    const currentToken = activeToken || token;
+    if (!currentToken) return;
+
+    try {
+      const response = await axios.post(
+        `${backendUrl}/api/cart/get`,
+        {},
+        {
+          headers: {
+            Authorization: `Bearer ${currentToken}`,
+          },
+        }
+      );
+
+      if (response.data.success) {
+        const backendCart = response.data.cartData || [];
+        setCartItems(backendCart);
+        localStorage.setItem(
+          "cartItems",
+          JSON.stringify(backendCart)
+        );
+
+        // Update count for navbar compatibility
+        const totalCount = backendCart.reduce(
+          (total, item) => total + item.quantity,
+          0
+        );
+        localStorage.setItem("cartCount", totalCount);
+        window.dispatchEvent(new Event("cartUpdated"));
+      }
+    } catch (error) {
+      console.log(error);
+      toast.error(error.message);
+    }
+  };
+
+  // ==========================================
+  // CLEAR CART
+  // ==========================================
+
+  const clearCart = () => {
+    setCartItems([]);
+    localStorage.removeItem("cartItems");
+    localStorage.setItem("cartCount", 0);
+    window.dispatchEvent(new Event("cartUpdated"));
+  };
+
+  // ==========================================
   // FETCH PRODUCTS
   // ==========================================
 
   const getProductsData = async () => {
-
     try {
-
       const response =
         await axios.get(
           backendUrl +
@@ -150,32 +237,25 @@ const ShopContextProvider = (props) => {
         );
 
       if (response.data.success) {
-
         setProducts(
           response.data.products
         );
-
       } else {
-
         toast.error(
           response.data.message
         );
       }
-
     } catch (error) {
-
       console.log(error);
-
       toast.error(error.message);
     }
   };
 
   // ==========================================
-  // LOAD CART
+  // LOAD CART & TOKEN ON INITIAL MOUNT
   // ==========================================
 
   useEffect(() => {
-
     const storedCart =
       JSON.parse(
         localStorage.getItem(
@@ -184,18 +264,18 @@ const ShopContextProvider = (props) => {
       ) || [];
 
     setCartItems(storedCart);
-
   }, []);
-
-  // ==========================================
-  // FETCH PRODUCTS
-  // ==========================================
 
   useEffect(() => {
-
     getProductsData();
-
   }, []);
+
+  // FETCH BACKEND CART WHEN TOKEN CHANGES
+  useEffect(() => {
+    if (token) {
+      getUserCart(token);
+    }
+  }, [token]);
 
   const value = {
     products,
@@ -206,6 +286,11 @@ const ShopContextProvider = (props) => {
     addToCart,
     getCartCount,
     backendUrl,
+    token,
+    setToken,
+    updateCart,
+    getUserCart,
+    clearCart,
   };
 
   return (

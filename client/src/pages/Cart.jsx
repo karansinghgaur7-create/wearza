@@ -1,98 +1,13 @@
-
-import React, { useEffect, useState } from "react";
+import React, { useContext } from "react";
 import { FaTrash } from "react-icons/fa";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import "./Cart.css";
+import { ShopContext } from "../context/shopContext";
 
 const Cart = () => {
-  const [cartItems, setCartItems] = useState([]);
-
-  const backendUrl = import.meta.env.VITE_BACKEND_URL;
-
-  const token = localStorage.getItem("token");
-
-  // LOAD CART FROM LOCAL STORAGE
-  useEffect(() => {
-    try {
-      const items =
-        JSON.parse(localStorage.getItem("cartItems")) || [];
-
-      setCartItems(items);
-    } catch (error) {
-      console.error("Invalid cart data:", error);
-      setCartItems([]);
-    }
-  }, []);
-
-  // GET USER CART FROM BACKEND
-  const getUserCart = async () => {
-    try {
-      const response = await axios.post(
-        `${backendUrl}/api/cart/get`,
-        {},
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
-
-      if (response.data.success) {
-        const backendCart = response.data.cartData || [];
-
-        setCartItems(backendCart);
-
-        localStorage.setItem(
-          "cartItems",
-          JSON.stringify(backendCart)
-        );
-      }
-    } catch (error) {
-      console.error(
-        "Failed to fetch cart:",
-        error.response?.data || error.message
-      );
-    }
-  };
-
-  // FETCH CART
-  useEffect(() => {
-    if (token) {
-      getUserCart();
-    }
-  }, []);
-
-  // UPDATE CART
-  const updateCart = async (updatedCart) => {
-    setCartItems(updatedCart);
-
-    localStorage.setItem(
-      "cartItems",
-      JSON.stringify(updatedCart)
-    );
-
-    if (token) {
-      try {
-        await axios.post(
-          `${backendUrl}/api/cart/update`,
-          {
-            cartData: updatedCart,
-          },
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          }
-        );
-      } catch (error) {
-        console.error(
-          "Failed to update cart:",
-          error.response?.data || error.message
-        );
-      }
-    }
-  };
+  const navigate = useNavigate();
+  const { cartItems, token, updateCart } = useContext(ShopContext);
 
   // INCREASE QUANTITY
   const increaseQty = (index) => {

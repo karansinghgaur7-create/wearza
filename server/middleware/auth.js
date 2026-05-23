@@ -33,10 +33,13 @@ const authUser = async (req, res, next) => {
     );
 
     req.userId = decoded.id;
+    req.body.userId = decoded.id;
 
     next();
   } catch (error) {
-    console.log(error);
+    console.log("Authentication Error:", error.message);
+    console.log("Token sent by client:", req.headers.authorization);
+    console.log("JWT_SECRET on server:", process.env.JWT_SECRET);
 
     res.status(401).json({
       success: false,

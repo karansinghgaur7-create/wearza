@@ -15,7 +15,7 @@ const Product = () => {
 
   const { productId } = useParams();
 
-  const { products } = useContext(ShopContext);
+  const { products, addToCart: contextAddToCart } = useContext(ShopContext);
 
   const [productData, setProductData] = useState(null);
 
@@ -63,58 +63,7 @@ const Product = () => {
       return;
     }
 
-    // GET EXISTING CART
-    const existingCart =
-      JSON.parse(localStorage.getItem("cartItems")) || [];
-
-    // NEW PRODUCT
-    const newProduct = {
-      _id: productData._id,
-      name: productData.name,
-      price: productData.price,
-      image: productData.image[0],
-      size: size,
-      quantity: 1,
-    };
-
-    // CHECK PRODUCT EXISTS
-    const productIndex = existingCart.findIndex(
-      (item) =>
-        item._id === newProduct._id &&
-        item.size === newProduct.size
-    );
-
-    if (productIndex !== -1) {
-
-      // INCREASE QUANTITY
-      existingCart[productIndex].quantity += 1;
-
-    } else {
-
-      // ADD NEW PRODUCT
-      existingCart.push(newProduct);
-
-    }
-
-    // SAVE CART
-    localStorage.setItem(
-      "cartItems",
-      JSON.stringify(existingCart)
-    );
-
-    // UPDATE COUNT
-    const totalCount = existingCart.reduce(
-      (total, item) => total + item.quantity,
-      0
-    );
-
-    localStorage.setItem(
-      "cartCount",
-      totalCount
-    );
-
-    // UPDATE NAVBAR
-    window.dispatchEvent(new Event("cartUpdated"));
+    contextAddToCart(productData, size);
 
     setMessage("Product added to cart");
   };

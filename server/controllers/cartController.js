@@ -1,6 +1,7 @@
 // controllers/cartController.js
 
 import userModel from "../models/userModel.js";
+import productModel from "../models/productModel.js";
 
 // ==========================
 // Add Product To Cart
@@ -29,22 +30,35 @@ const addToCart = async (req, res) => {
     }
 
     // Get cart data
-    let cartData = userData.cartData || {};
+    let cartData = userData.cartData || [];
+    if (!Array.isArray(cartData)) {
+      cartData = [];
+    }
 
-    // Add item logic
-    if (cartData[itemId]) {
+    // Find if the item already exists in the cart array with the same size
+    const existingIndex = cartData.findIndex(
+      (item) => item._id === itemId && item.size === size
+    );
 
-      if (cartData[itemId][size]) {
-        cartData[itemId][size] += 1;
-      } else {
-        cartData[itemId][size] = 1;
-      }
-
+    if (existingIndex !== -1) {
+      cartData[existingIndex].quantity += 1;
     } else {
-
-      cartData[itemId] = {};
-      cartData[itemId][size] = 1;
-
+      // Find product details
+      const product = await productModel.findById(itemId);
+      if (!product) {
+        return res.json({
+          success: false,
+          message: "Product not found",
+        });
+      }
+      cartData.push({
+        _id: itemId,
+        name: product.name,
+        image: product.image[0],
+        price: product.price,
+        quantity: 1,
+        size,
+      });
     }
 
     // Update database
@@ -74,10 +88,10 @@ const addToCart = async (req, res) => {
 const updateCart = async (req, res) => {
   try {
 
-    const { userId, itemId, size, quantity } = req.body;
+    const { userId, cartData } = req.body;
 
     // Validation
-    if (!userId || !itemId || !size || quantity == null) {
+    if (!userId || !cartData) {
       return res.json({
         success: false,
         message: "Missing required fields",
@@ -92,29 +106,6 @@ const updateCart = async (req, res) => {
         success: false,
         message: "User not found",
       });
-    }
-
-    let cartData = userData.cartData || {};
-
-    // Check item
-    if (!cartData[itemId]) {
-      cartData[itemId] = {};
-    }
-
-    // Remove item if quantity <= 0
-    if (quantity <= 0) {
-
-      delete cartData[itemId][size];
-
-      // Remove product if no sizes left
-      if (Object.keys(cartData[itemId]).length === 0) {
-        delete cartData[itemId];
-      }
-
-    } else {
-
-      cartData[itemId][size] = quantity;
-
     }
 
     // Save
@@ -165,7 +156,10 @@ const getUserCart = async (req, res) => {
     }
 
     // Cart data
-    let cartData = userData.cartData || {};
+    let cartData = userData.cartData || [];
+    if (!Array.isArray(cartData)) {
+      cartData = [];
+    }
 
     res.json({
       success: true,

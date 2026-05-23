@@ -3,8 +3,8 @@
 // ==========================================
 
 import React, {
-  useEffect,
   useState,
+  useContext
 } from "react";
 
 import "./PlaceOrder.css";
@@ -12,15 +12,12 @@ import "./PlaceOrder.css";
 import { useNavigate } from "react-router-dom";
 
 import axios from "axios";
+import { ShopContext } from "../context/shopContext";
 
 const PlaceOrder = () => {
   const navigate = useNavigate();
 
-  const backendUrl =
-    import.meta.env.VITE_BACKEND_URL;
-
-  const [cartItems, setCartItems] =
-    useState([]);
+  const { cartItems, clearCart, token, backendUrl } = useContext(ShopContext);
 
   const [loading, setLoading] =
     useState(false);
@@ -37,24 +34,6 @@ const PlaceOrder = () => {
       country: "",
       phone: "",
     });
-
-  // LOAD CART
-  useEffect(() => {
-    try {
-      const items =
-        JSON.parse(
-          localStorage.getItem(
-            "cartItems"
-          )
-        ) || [];
-
-      setCartItems(items);
-    } catch (error) {
-      console.log(error);
-
-      setCartItems([]);
-    }
-  }, []);
 
   // HANDLE INPUT
   const handleChange = (e) => {
@@ -103,9 +82,6 @@ const PlaceOrder = () => {
           return;
         }
 
-        const token =
-          localStorage.getItem("token");
-
         if (!token) {
           alert("Please login first");
 
@@ -146,11 +122,7 @@ const PlaceOrder = () => {
             "Order Placed Successfully"
           );
 
-          localStorage.removeItem(
-            "cartItems"
-          );
-
-          setCartItems([]);
+          clearCart();
 
           navigate("/orders");
         } else {
@@ -160,12 +132,15 @@ const PlaceOrder = () => {
         }
       } catch (error) {
         console.log(error);
-
-        alert(
-          error.response?.data
-            ?.message ||
-            "Something went wrong"
-        );
+        if (error.response?.status === 401) {
+          localStorage.removeItem("token");
+          alert("Session expired. Please login again.");
+          navigate("/login");
+        } else {
+          alert(
+            error.response?.data?.message || "Something went wrong"
+          );
+        }
       } finally {
         setLoading(false);
       }

@@ -114,7 +114,7 @@ const createOrder = async (req, res) => {
     await userModel.findByIdAndUpdate(
       userId,
       {
-        cartData: {},
+        cartData: [],
       }
     );
 

@@ -1,10 +1,13 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import "./LogIn.css";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import { toast } from "react-toastify";
+import { ShopContext } from "../context/shopContext";
 
 const LogIn = () => {
 
+  const { setToken } = useContext(ShopContext);
   const backendUrl = import.meta.env.VITE_BACKEND_URL;
   const navigate = useNavigate();
 
@@ -18,30 +21,34 @@ const LogIn = () => {
     event.preventDefault();
 
     try {
+      let response;
 
       if (currentState === "Sign Up") {
-
-        const response = await axios.post(
+        response = await axios.post(
           backendUrl + "/api/user/register",
           { name, email, password }
         );
-
-        console.log(response.data);
-
       } else {
-
-        const response = await axios.post(
+        response = await axios.post(
           backendUrl + "/api/user/login",
           { email, password }
         );
-
-        console.log(response.data);
       }
 
-      navigate("/");
+      console.log(response.data);
+
+      if (response.data.success) {
+        localStorage.setItem("token", response.data.token);
+        setToken(response.data.token);
+        toast.success(currentState === "Sign Up" ? "Registered Successfully!" : "Logged In Successfully!");
+        navigate("/");
+      } else {
+        toast.error(response.data.message);
+      }
 
     } catch (error) {
       console.log(error);
+      toast.error(error.response?.data?.message || error.message);
     }
   };
 

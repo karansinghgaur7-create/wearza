@@ -1,6 +1,6 @@
 // Navbar.jsx
 
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 
 import { NavLink, Link } from "react-router-dom";
 
@@ -17,12 +17,13 @@ import {
 import logo from "../../assets/logo.png";
 
 import "./Navbar.css";
+import { ShopContext } from "../../context/shopContext";
 
 const Navbar = () => {
 
   const [isOpen, setIsOpen] = useState(false);
 
-  const [cartCount, setCartCount] = useState(0);
+  const { getCartCount } = useContext(ShopContext);
 
   // CLOSE MENU
   const closeMenu = () => setIsOpen(false);
@@ -33,32 +34,6 @@ const Navbar = () => {
       ? "hidden"
       : "auto";
   }, [isOpen]);
-
-  // UPDATE CART COUNT
-  useEffect(() => {
-
-    const updateCartCount = () => {
-      const count =
-        Number(localStorage.getItem("cartCount")) || 0;
-
-      setCartCount(count);
-    };
-
-    updateCartCount();
-
-    window.addEventListener(
-      "cartUpdated",
-      updateCartCount
-    );
-
-    return () => {
-      window.removeEventListener(
-        "cartUpdated",
-        updateCartCount
-      );
-    };
-
-  }, []);
 
   const navLinks = [
     { path: "/", name: "Home" },
@@ -143,9 +118,9 @@ const Navbar = () => {
                 icon={faCartShopping}
               />
 
-              {cartCount > 0 && (
+              {getCartCount() > 0 && (
                 <span className="cart-badge">
-                  {cartCount}
+                  {getCartCount()}
                 </span>
               )}
 
