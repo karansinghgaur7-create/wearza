@@ -1,7 +1,7 @@
 // controllers/cartController.js
 
 import userModel from "../models/userModel.js";
-import productModel from "../models/productModel.js";
+import productModel from "../models/ProductModel.js";
 
 // ==========================
 // Add Product To Cart
