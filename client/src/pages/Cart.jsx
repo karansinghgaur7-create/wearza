@@ -3,7 +3,7 @@ import { FaTrash } from "react-icons/fa";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import "./Cart.css";
-import { ShopContext } from "../context/shopContext";
+import { ShopContext } from "../context/ShopContext";
 
 const Cart = () => {
   const navigate = useNavigate();

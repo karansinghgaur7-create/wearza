@@ -12,9 +12,9 @@ import "./PlaceOrder.css";
 import { useNavigate } from "react-router-dom";
 
 import axios from "axios";
-import { ShopContext } from "../context/shopContext";
+import { ShopContext } from "../context/ShopContext";
 
-const PlaceOrder = () => {
+const PlaceOrder = () => { 
   const navigate = useNavigate();
 
   const { cartItems, clearCart, token, backendUrl } = useContext(ShopContext);

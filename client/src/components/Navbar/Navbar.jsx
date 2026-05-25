@@ -17,7 +17,7 @@ import {
 import logo from "../../assets/logo.png";
 
 import "./Navbar.css";
-import { ShopContext } from "../../context/shopContext";
+import { ShopContext } from "../../context/ShopContext";
 
 const Navbar = () => {
 
