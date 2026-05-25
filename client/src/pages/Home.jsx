@@ -1,8 +1,8 @@
 import React from 'react'
-import Banner from "../components/banner/Banner"
-import LatestCollection from '../components/collection/LatestCollection';
-import Ourpolicy from '../components/ourpolicy/Ourpolicy';
-import NewletterBox from '../components/NewletterBox/NewletterBox';
+import Banner from "../components/banner/Banner.jsx"
+import LatestCollection from '../components/collection/LatestCollection.jsx';
+import Ourpolicy from '../components/ourpolicy/OurPolicy.jsx';
+import NewletterBox from '../components/NewletterBox/NewletterBox.jsx';
 
 
 const Home = () => {
