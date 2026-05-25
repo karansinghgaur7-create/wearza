@@ -7,7 +7,7 @@ import { toast } from "react-toastify";
 import "./productCollection.css";
 
 import { assets } from "../../assets/assets";
-import ProductItem from "../../components/collection/ProductItem";
+import ProductItem from "../collection/ProductItem";
 
 const ProductCollection = () => {
   // ================= STATES =================
