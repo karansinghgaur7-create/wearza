@@ -1,5 +1,5 @@
 import React from 'react'
-import ProductCollection from '../components/ProductCollection/ProductCollection.jsx'
+import ProductCollection from '../components/productCollection/ProductCollection.jsx'
 
 const Collection = () => {
   return (

@@ -3,7 +3,7 @@ import "./LogIn.css";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { toast } from "react-toastify";
-import { ShopContext } from "../context/shopContext";
+import { ShopContext } from "../context/ShopContext.jsx";
 
 const LogIn = () => {
 

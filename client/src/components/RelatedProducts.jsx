@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useContext } from 'react';
-import { ShopContext } from '../context/shopContext';
+import { ShopContext } from '../context/ShopContext.jsx';
 import ProductItem from '../components/collection/ProductItem';
 
 const RelatedProducts = ({ category, subCategory }) => {

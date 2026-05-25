@@ -1,6 +1,6 @@
 // LatestCollection.jsx
 import React, { useContext, useEffect, useState } from 'react'
-import { ShopContext } from '../../context/shopContext'
+import { ShopContext } from '../../context/ShopContext.jsx'
 import ProductItem from './ProductItem'
 import './collection.css'
 
